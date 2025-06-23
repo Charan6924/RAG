@@ -80,14 +80,7 @@ def log_txt(message : str) -> str:
 tools = [inv_tool,log_txt]
 agent_executor = create_react_agent(llm, tools)
 
-input_message = {
-    "role": "user",
-    "content": (
-        "Answer the question: 'How were Neonatal anthropometric measurements made?'. "
-        "After generating the answer, use the appropriate tool to log both the question and the answer to a .txt file."
-    )
-}
-
+input_message = {"role": "user", "content": "Hi!"}
 response = agent_executor.invoke({"messages": [input_message]})
 
 for message in response["messages"]:
