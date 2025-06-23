@@ -12,9 +12,17 @@ from typing_extensions import List, TypedDict
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.tools import tool
 from langgraph.prebuilt import create_react_agent
+from dotenv import load_dotenv
+import os
 
-os.environ["OPENAI_API_KEY"] = "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"
-os.environ["USER_AGENT"] = "rag"
+load_dotenv()
+
+openai_key = os.getenv("OPENAI_API_KEY")
+if not openai_key:
+    raise ValueError("OPENAI_API_KEY not found in environment.")
+
+os.environ["OPENAI_API_KEY"] = openai_key
+
 
 llm = ChatOpenAI(model="gpt-4o-mini")
 embeddings = OpenAIEmbeddings()
@@ -72,5 +80,15 @@ def log_txt(message : str) -> str:
 tools = [inv_tool,log_txt]
 agent_executor = create_react_agent(llm, tools)
 
+input_message = {
+    "role": "user",
+    "content": (
+        "Answer the question: 'How were Neonatal anthropometric measurements made?'. "
+        "After generating the answer, use the appropriate tool to log both the question and the answer to a .txt file."
+    )
+}
 
+response = agent_executor.invoke({"messages": [input_message]})
 
+for message in response["messages"]:
+    message.pretty_print()
