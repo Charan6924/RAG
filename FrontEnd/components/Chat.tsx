@@ -56,7 +56,7 @@ export default function Chat() {
   }, [messages, loading]);
 
   return (
-    <main className="w-screen min-h-screen bg-black text-white flex items-center justify-center">
+    <main className="bg-black text-white flex items-center justify-center h-full w-full overflow-hidden">
       <AnimatePresence mode="wait">
         {!chatStarted ? (
           <motion.form
@@ -88,7 +88,7 @@ export default function Chat() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="flex flex-col w-full h-screen bg-zinc-900"
+            className="flex flex-col w-full h-full bg-black"
           >
             {/* Chat History */}
             <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
@@ -139,7 +139,7 @@ export default function Chat() {
             {/* Input */}
             <form
               onSubmit={sendMessage}
-              className="w-full flex justify-center px-4 py-6 border-t border-zinc-800 bg-zinc-900"
+              className="w-full flex justify-center px-4 py-6 border-t border-black bg-black"
             >
               <div className="flex items-center w-full max-w-2xl bg-zinc-800 rounded-3xl px-4 py-3 shadow-lg">
                 <textarea
