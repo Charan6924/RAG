@@ -16,7 +16,6 @@
   "devDependencies": {
     "@types/node": "24.0.4",
     "@types/react": "19.1.8",
-    "@types/tailwindcss": "^3.0.11",
     "autoprefixer": "^10.4.21",
     "daisyui": "^5.0.43",
     "postcss": "^8.5.6",
