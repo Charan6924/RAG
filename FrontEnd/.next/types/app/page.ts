@@ -1,4 +1,4 @@
-// File: /Users/charan/Desktop/FastApi/FrontEnd/app/page.tsx
+// File: /Users/charan/Desktop/RAG-Chatbot/FrontEnd/app/page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
