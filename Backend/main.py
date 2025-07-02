@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
+import uuid
 
 load_dotenv()
 
@@ -45,6 +46,10 @@ app.add_middleware(
 class QueryRequest(BaseModel):
     query: str
 
+
+
+session_id = str(uuid.uuid4()) # generates a random UUID
+
 @app.post("/rag")
 def ask_question(request: QueryRequest):
     system_message = {
@@ -61,8 +66,8 @@ def ask_question(request: QueryRequest):
     app.state.database["Chats"].insert_one({
         "question": request.query,
         "answer": answer,
-        "timestamp": datetime.now()
-    })
+        "session_id" : session_id})
+    
     return {"answer": answer}
 
 if __name__ == "__main__":
