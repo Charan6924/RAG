@@ -45,30 +45,36 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
     query: str
+    session_id : str
 
-
-
-session_id = str(uuid.uuid4()) # generates a random UUID
+@app.get('/new_session')
+def session():
+    session_id = str(uuid.uuid4())
+    return {'session_id' : session_id}
 
 @app.post("/rag")
 def ask_question(request: QueryRequest):
-    system_message = {
+    try:
+        system_message = {
         "role": "system",
         "content": "Answer the user's question."
-    }
-    user_message = {
-        "role": "user",
-        "content": request.query
-    }
-    result = agent_executor.invoke({"messages": [system_message, user_message]})
-    all_outputs = [msg.content for msg in result["messages"]]
-    answer = all_outputs[-1]
-    app.state.database["Chats"].insert_one({
+        }
+        user_message = {
+         "role": "user",
+         "content": request.query
+        }
+        result = agent_executor.invoke({"messages": [system_message, user_message]})
+        all_outputs = [msg.content for msg in result["messages"]]
+        answer = all_outputs[-1]
+        app.state.database["Chats"].insert_one({
         "question": request.query,
         "answer": answer,
-        "session_id" : session_id})
+        "timestamp" : datetime.now(),
+        "session_id": request.session_id})
     
-    return {"answer": answer}
+        return {"answer": answer}
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")

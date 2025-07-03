@@ -1,14 +1,16 @@
 "use client";
-
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { useRef } from "react";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/rag";
+const apiUrl = "http://127.0.0.1:8001/rag";
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -16,10 +18,24 @@ export default function Chat() {
   const [chatStarted, setChatStarted] = useState(false);
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const [session, setSession] = useState<string | null>("");
+
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8001/new_session");
+        const data = await res.json();
+        setSession(data.session_id);
+      } catch (err) {
+        console.error("Failed to get session:", err);
+      }
+    };
+    getSession();
+  }, []);
 
   const sendMessage = async (e: React.FormEvent | React.KeyboardEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || !session) return;
 
     const query = input;
     setInput("");
@@ -32,7 +48,10 @@ export default function Chat() {
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({
+          query,
+          session_id: session,
+        }),
       });
 
       const data = await res.json();
