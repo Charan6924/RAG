@@ -1,5 +1,5 @@
 import React from "react";
-import Chat from "/Users/charan/Desktop/RAG-Chatbot/FrontEnd/components/Chat";
+import Chat from "../components/Chat";
 
 export default function Home() {
   return (

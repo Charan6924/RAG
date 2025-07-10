@@ -76,6 +76,43 @@ def ask_question(request: QueryRequest):
     except Exception as e:
         print(e)
 
+from fastapi.responses import JSONResponse
+
+
+@app.get('/chat_history')
+def retrieve_history():
+    d = {}
+    for doc in app.state.database["Chats"].find({},{"_id": 0, "question": 1,"session_id":1}).sort('timestamp'):
+        key = doc['session_id']
+        if key in d:
+            pass
+        else:
+            d[key] = [doc]
+    return JSONResponse(content=d)
+
+@app.get('/complete_history')
+def get_complete(session_id: str):
+    messages = []
+    for i in app.state.database["Chats"].find(
+        {"session_id": session_id},
+        {"_id": 0, "question": 1, "answer" : 1 }
+    ).sort('timestamp'):
+        
+        # Append user message
+        messages.append({
+            "role": "user",
+            "content": i["question"]
+        })
+
+        # Append assistant response
+        messages.append({
+            "role": "assistant",
+            "content": i["answer"]
+        })
+
+    return JSONResponse(content=messages)
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
 

@@ -29,7 +29,7 @@ embeddings = OpenAIEmbeddings()
 vector_store = InMemoryVectorStore(embeddings)
 
 docs = []
-file_paths = [os.path.join("/Users/charan/Desktop/RAG-Chatbot/FrontEnd/public/Files", f) for f in os.listdir("/Users/charan/Desktop/RAG-Chatbot/FrontEnd/public/Files") if f.endswith(".pdf")]
+file_paths = [os.path.join("../FrontEnd/public/Files", f) for f in os.listdir("../FrontEnd/public/Files") if f.endswith(".pdf")]
 for f in file_paths:
     loader = PyPDFLoader(f)
     doc = loader.load()
