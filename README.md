@@ -9,14 +9,14 @@ This chatbot allows users to ask questions based on documents ingested into a ve
 
 ---
 
-## ✔ Features
+##  Features
 
-- ✅ GPT-4o powered answers using LangChain agents
-- 📄 PDF/text ingestion and chunking for context-aware retrieval
-- 🧠 Vector-based similarity search
-- 🗃 Chat history persistence using MongoDB
-- 💡 Session-based unique chat identification
-- ⚡ FastAPI backend with async handling
-- 🌐 Next.js frontend with TailwindCSS + DaisyUI for modern UI/UX
+-  GPT-4o powered answers using LangChain agents
+-  PDF/text ingestion and chunking for context-aware retrieval
+-  Vector-based similarity search
+-  Chat history persistence using MongoDB
+-  Session-based unique chat identification
+-  FastAPI backend with async handling
+-  Next.js frontend with TailwindCSS + DaisyUI for modern UI/UX
 
 ---
